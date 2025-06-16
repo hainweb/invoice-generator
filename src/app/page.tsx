@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Invoice from "./components/invoice-form.js";
 import InvoicePreview from "./components/invoice-preview.js";
 import { useState } from "react";
