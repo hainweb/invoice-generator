@@ -3,7 +3,7 @@ import { FileText, Download } from "lucide-react";
 import {generatePDF} from '../../lib/pdf-generator'
 
 export default function invoicePrwview({ formData }) {
-  const { invoice, business, client, invoiceItem, additionalInfo } = formData;
+  const { invoice, additionalInfo } = formData;
   const buttonClass =
     " inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-2 border border-gray-200 text-sm font-medium hover:bg-blue-600 ring-offset-background disabled:pointer-events-none disabled:opacity-50";
 
