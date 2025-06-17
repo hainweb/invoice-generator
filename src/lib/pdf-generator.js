@@ -1,5 +1,4 @@
 import { Document, Page, Text, View, StyleSheet, pdf } from '@react-pdf/renderer';
-import { IndianRupee } from 'lucide-react'
 
 const styles = StyleSheet.create({
   page: {
@@ -215,8 +214,8 @@ const InvoicePDF = ({ invoiceData }) => {
                 {item.description || 'Item description'}
               </Text>
               <Text style={[styles.tableCell, styles.quantityCell]}>{item.quantity}</Text>
-              <Text style={[styles.tableCell, styles.rateCell]}><IndianRupee />{Number(item.rate).toFixed(2)}</Text>
-              <Text style={[styles.tableCell, styles.amountCell]}><IndianRupee />{Number(item.amount).toFixed(2)}</Text>
+              <Text style={[styles.tableCell, styles.rateCell]}>₹{Number(item.rate).toFixed(2)}</Text>
+              <Text style={[styles.tableCell, styles.amountCell]}>₹{Number(item.amount).toFixed(2)}</Text>
             </View>
           ))}
         </View>
@@ -224,19 +223,19 @@ const InvoicePDF = ({ invoiceData }) => {
         <View style={styles.totalsSection}>
           <View style={styles.totalRow}>
             <Text style={styles.totalLabel}>Subtotal:</Text>
-            <Text style={styles.totalValue}><IndianRupee />{invoiceData.subtotal.toFixed(2)}</Text>
+            <Text style={styles.totalValue}>₹{invoiceData.subtotal.toFixed(2)}</Text>
           </View>
 
           {parseFloat(invoiceData.additionalInfo.taxRate) > 0 && (
             <View style={styles.totalRow}>
               <Text style={styles.totalLabel}>Tax ({invoiceData.additionalInfo.taxRate}%):</Text>
-              <Text style={styles.totalValue}><IndianRupee />{invoiceData.taxAmount.toFixed(2)}</Text>
+              <Text style={styles.totalValue}>₹{invoiceData.taxAmount.toFixed(2)}</Text>
             </View>
           )}
 
           <View style={[styles.totalRow, styles.grandTotal]}>
             <Text style={styles.grandTotalLabel}>Total:</Text>
-            <Text style={styles.grandTotalValue}><IndianRupee />{invoiceData.total.toFixed(2)}</Text>
+            <Text style={styles.grandTotalValue}>₹{invoiceData.total.toFixed(2)}</Text>
           </View>
         </View>
 
