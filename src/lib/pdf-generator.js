@@ -1,25 +1,11 @@
-import {
-  Document,
-  Page,
-  Text,
-  View,
-  StyleSheet,
-  pdf,
-  Font,
-} from '@react-pdf/renderer';
-
-// ✅ Register a font that supports ₹ symbol
-Font.register({
-  family: 'NotoSans',
-  src: 'https://fonts.gstatic.com/s/notosans/v27/o-0IIpQlx3QUlC5A4PNb4j5Ba_2c7A.woff2',
-});
+import { Document, Page, Text, View, StyleSheet, PDFDownloadLink, pdf } from '@react-pdf/renderer';
 
 const styles = StyleSheet.create({
   page: {
     flexDirection: 'column',
     backgroundColor: '#FFFFFF',
     padding: 30,
-    fontFamily: 'NotoSans',
+    fontFamily: 'Helvetica',
   },
   header: {
     alignItems: 'center',
@@ -164,11 +150,10 @@ const InvoicePDF = ({ invoiceData }) => {
     });
   };
 
-  const formatINR = (amount) => `₹${Number(amount).toFixed(2)}`;
-
   return (
     <Document>
       <Page size="A4" style={styles.page}>
+        {/* Header */}
         <View style={styles.header}>
           <Text style={styles.title}>INVOICE</Text>
           <View style={styles.invoiceInfo}>
@@ -178,6 +163,7 @@ const InvoicePDF = ({ invoiceData }) => {
           </View>
         </View>
 
+        {/* Business and Client Info */}
         <View style={styles.section}>
           <View style={styles.row}>
             <View style={styles.column}>
@@ -216,6 +202,7 @@ const InvoicePDF = ({ invoiceData }) => {
           </View>
         </View>
 
+        {/* Items Table */}
         <View style={styles.table}>
           <View style={styles.tableHeader}>
             <Text style={[styles.tableHeaderCell, styles.descriptionCell]}>Description</Text>
@@ -226,37 +213,35 @@ const InvoicePDF = ({ invoiceData }) => {
 
           {invoiceData.invoiceItem.map((item) => (
             <View key={item.id} style={styles.tableRow}>
-              <Text style={[styles.tableCell, styles.descriptionCell]}>
-                {item.description || 'Item description'}
-              </Text>
+              <Text style={[styles.tableCell, styles.descriptionCell]}>{item.description || 'Item description'}</Text>
               <Text style={[styles.tableCell, styles.quantityCell]}>{item.quantity}</Text>
-              <Text style={[styles.tableCell, styles.rateCell]}>{formatINR(item.rate)}</Text>
-              <Text style={[styles.tableCell, styles.amountCell]}>{formatINR(item.amount)}</Text>
+              <Text style={[styles.tableCell, styles.rateCell]}>Rs. {Number(item.rate).toFixed(2)}</Text>
+              <Text style={[styles.tableCell, styles.amountCell]}>Rs. {Number(item.amount).toFixed(2)}</Text>
             </View>
           ))}
         </View>
 
+        {/* Totals */}
         <View style={styles.totalsSection}>
           <View style={styles.totalRow}>
             <Text style={styles.totalLabel}>Subtotal:</Text>
-            <Text style={styles.totalValue}>{formatINR(invoiceData.subtotal)}</Text>
+            <Text style={styles.totalValue}>Rs. {invoiceData.subtotal.toFixed(2)}</Text>
           </View>
 
           {parseFloat(invoiceData.additionalInfo.taxRate) > 0 && (
             <View style={styles.totalRow}>
-              <Text style={styles.totalLabel}>
-                Tax ({invoiceData.additionalInfo.taxRate}%):
-              </Text>
-              <Text style={styles.totalValue}>{formatINR(invoiceData.taxAmount)}</Text>
+              <Text style={styles.totalLabel}>Tax ({invoiceData.additionalInfo.taxRate}%):</Text>
+              <Text style={styles.totalValue}>Rs. {invoiceData.taxAmount.toFixed(2)}</Text>
             </View>
           )}
 
           <View style={[styles.totalRow, styles.grandTotal]}>
             <Text style={styles.grandTotalLabel}>Total:</Text>
-            <Text style={styles.grandTotalValue}>{formatINR(invoiceData.total)}</Text>
+            <Text style={styles.grandTotalValue}>Rs. {invoiceData.total.toFixed(2)}</Text>
           </View>
         </View>
 
+        {/* Notes */}
         {invoiceData.additionalInfo.notes && (
           <View style={styles.notes}>
             <Text style={styles.notesTitle}>Notes:</Text>

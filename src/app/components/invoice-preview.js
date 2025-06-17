@@ -38,7 +38,7 @@ export default function invoicePrwview({ formData }) {
               onClick={handleDownload}
             >
               <Download className="w-4 h-4" />
-              <button>Download PDF</button>
+             Download PDF
             </div>
           </div>
         </CardHeader>
